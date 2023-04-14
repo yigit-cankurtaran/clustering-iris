@@ -18,7 +18,7 @@ scaler.fit(df)
 scaled_data = scaler.transform(df)
 # print(scaled_data)
 
-# choose the number of clusters to create using the elbow method
+# choose the number of clusters using the elbow method
 wcss = []
 for i in range(1, 11):
     kmeans = KMeans(n_clusters=i, init='k-means++',
