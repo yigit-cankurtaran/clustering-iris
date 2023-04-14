@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+from sklearn.metrics import silhouette_score
 
 # Load the iris dataset
 iris = load_iris()
@@ -32,7 +33,7 @@ plt.plot(range(1, 11), wcss)
 plt.title('The Elbow Method')
 plt.xlabel('Number of clusters')
 plt.ylabel('WCSS')
-plt.show()
+# plt.show()
 
 # the elbow is at 2, so we choose 2 clusters
 
@@ -50,9 +51,18 @@ ax1.scatter(df['sepal length (cm)'], df['sepal width (cm)'],
 ax2.set_title("Original")
 ax2.scatter(df['sepal length (cm)'], df['sepal width (cm)'],
             c=iris.target, cmap='rainbow')
-plt.show()
+# plt.show()
 
-# Predict the cluster of a new data point
+#  Predict the cluster of a new data point
 new_data = np.array([[5.1, 3.5, 1.4, 0.2]])
 new_data_scaled = scaler.transform(new_data)
-print(kmeans.predict(new_data_scaled))
+print(f'New data belongs in: {kmeans.predict(new_data_scaled)}')
+# returns [0]
+
+# in unsupervised learning, we don't have labels, so we can't evaluate the model
+# we can use the silhouette score to evaluate the model
+
+labels = kmeans.labels_
+silhouette_avg = silhouette_score(scaled_data, labels, metric='euclidean')
+print(f'Silhouette score is: {silhouette_avg}')
+# using the euclidean distance, the silhouette score is 0.58, not very good
