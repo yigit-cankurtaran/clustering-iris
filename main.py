@@ -42,15 +42,17 @@ kmeans.fit(scaled_data)
 
 df['cluster'] = kmeans.labels_
 
-#  Plot the clusters with a histogram
-df1 = df[df.cluster == 0]
-df2 = df[df.cluster == 1]
-
-plt.scatter(df1['sepal length (cm)'], df1['sepal width (cm)'],
-            color='green', label='Iris-setosa')
-plt.scatter(df2['sepal length (cm)'], df2['sepal width (cm)'],
-            color='red', label='Iris-versicolour')
-plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1],
-            color='black', label='Centroids')
-plt.legend()
+# Visualize the results
+fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10, 6))
+ax1.set_title('K Means')
+ax1.scatter(df['sepal length (cm)'], df['sepal width (cm)'],
+            c=df['cluster'], cmap='rainbow')
+ax2.set_title("Original")
+ax2.scatter(df['sepal length (cm)'], df['sepal width (cm)'],
+            c=iris.target, cmap='rainbow')
 plt.show()
+
+# Predict the cluster of a new data point
+new_data = np.array([[5.1, 3.5, 1.4, 0.2]])
+new_data_scaled = scaler.transform(new_data)
+print(kmeans.predict(new_data_scaled))
